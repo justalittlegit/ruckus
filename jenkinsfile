@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    triggers { pollSCM('* * * * *') }
+    stages {
+        /*stage('Checkout') {
+            steps {
+                git 'https://github.com/justalittlegit/ruckus.git'
+            }
+        }*/
+        stage('Build') {
+            steps {
+                powershell './mvnw clean package'
+            }
+            post {
+                success {
+                    archiveArtifacts 'target/*.jar'
+                }
+            }
+        }
+    }
+}
